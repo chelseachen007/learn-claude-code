@@ -1,0 +1,23 @@
+{
+  "name": "learn-claude-code-ts",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "s01": "npx tsx s01_agent_loop.ts",
+    "s02": "npx tsx s02_tool_use.ts",
+    "s08": "npx tsx s08_background_tasks.ts",
+    "s09": "npx tsx s09_agent_teams.ts",
+    "s10": "npx tsx s10_team_protocols.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "dotenv": "^16.0.0",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/uuid": "^10.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}

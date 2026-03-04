@@ -1,10 +1,6 @@
-[English](./README.md) | [中文](./README-zh.md) | [日本語](./README-ja.md)  
-# Learn Claude Code -- A nano Claude Code-like agent, built from 0 to 1
-<img width="260" src="https://github.com/user-attachments/assets/fe8b852b-97da-4061-a467-9694906b5edf" /><br>
+# Learn Claude Code -- 从 0 到 1 构建 nano Claude Code-like agent
 
-Scan with Wechat to fellow us,  
-or fellow on X: [shareAI-Lab](https://x.com/baicai003)  
-
+[English](./README.md) | [中文](./README-zh.md) | [日本語](./README-ja.md)
 
 ```
                     THE AGENT PATTERN
@@ -21,40 +17,40 @@ or fellow on X: [shareAI-Lab](https://x.com/baicai003)
                     loop back -----------------> messages[]
 
 
-    That's the minimal loop. Every AI coding agent needs this loop.
-    Production agents add policy, permissions, and lifecycle layers.
+    这是最小循环。每个 AI 编程 Agent 都需要这个循环。
+    生产级 Agent 还会叠加策略、权限与生命周期层。
 ```
 
-**12 progressive sessions, from a simple loop to isolated autonomous execution.**
-**Each session adds one mechanism. Each mechanism has one motto.**
+**12 个递进式课程, 从简单循环到隔离化的自治执行。**
+**每个课程添加一个机制。每个机制有一句格言。**
 
-> **s01** &nbsp; *"One loop & Bash is all you need"* &mdash; one tool + one loop = an agent
+> **s01** &nbsp; *"One loop & Bash is all you need"* &mdash; 一个工具 + 一个循环 = 一个智能体
 >
-> **s02** &nbsp; *"Adding a tool means adding one handler"* &mdash; the loop stays the same; new tools register into the dispatch map
+> **s02** &nbsp; *"加一个工具, 只加一个 handler"* &mdash; 循环不用动, 新工具注册进 dispatch map 就行
 >
-> **s03** &nbsp; *"An agent without a plan drifts"* &mdash; list the steps first, then execute; completion doubles
+> **s03** &nbsp; *"没有计划的 agent 走哪算哪"* &mdash; 先列步骤再动手, 完成率翻倍
 >
-> **s04** &nbsp; *"Break big tasks down; each subtask gets a clean context"* &mdash; subagents use independent messages[], keeping the main conversation clean
+> **s04** &nbsp; *"大任务拆小, 每个小任务干净的上下文"* &mdash; 子智能体用独立 messages[], 不污染主对话
 >
-> **s05** &nbsp; *"Load knowledge when you need it, not upfront"* &mdash; inject via tool_result, not the system prompt
+> **s05** &nbsp; *"用到什么知识, 临时加载什么知识"* &mdash; 通过 tool_result 注入, 不塞 system prompt
 >
-> **s06** &nbsp; *"Context will fill up; you need a way to make room"* &mdash; three-layer compression strategy for infinite sessions
+> **s06** &nbsp; *"上下文总会满, 要有办法腾地方"* &mdash; 三层压缩策略, 换来无限会话
 >
-> **s07** &nbsp; *"Break big goals into small tasks, order them, persist to disk"* &mdash; a file-based task graph with dependencies, laying the foundation for multi-agent collaboration
+> **s07** &nbsp; *"大目标要拆成小任务, 排好序, 记在磁盘上"* &mdash; 文件持久化的任务图, 为多 agent 协作打基础
 >
-> **s08** &nbsp; *"Run slow operations in the background; the agent keeps thinking"* &mdash; daemon threads run commands, inject notifications on completion
+> **s08** &nbsp; *"慢操作丢后台, agent 继续想下一步"* &mdash; 后台线程跑命令, 完成后注入通知
 >
-> **s09** &nbsp; *"When the task is too big for one, delegate to teammates"* &mdash; persistent teammates + async mailboxes
+> **s09** &nbsp; *"任务太大一个人干不完, 要能分给队友"* &mdash; 持久化队友 + 异步邮箱
 >
-> **s10** &nbsp; *"Teammates need shared communication rules"* &mdash; one request-response pattern drives all negotiation
+> **s10** &nbsp; *"队友之间要有统一的沟通规矩"* &mdash; 一个 request-response 模式驱动所有协商
 >
-> **s11** &nbsp; *"Teammates scan the board and claim tasks themselves"* &mdash; no need for the lead to assign each one
+> **s11** &nbsp; *"队友自己看看板, 有活就认领"* &mdash; 不需要领导逐个分配, 自组织
 >
-> **s12** &nbsp; *"Each works in its own directory, no interference"* &mdash; tasks manage goals, worktrees manage directories, bound by ID
+> **s12** &nbsp; *"各干各的目录, 互不干扰"* &mdash; 任务管目标, worktree 管目录, 按 ID 绑定
 
 ---
 
-## The Core Pattern
+## 核心模式
 
 ```python
 def agent_loop(messages):
@@ -81,140 +77,140 @@ def agent_loop(messages):
         messages.append({"role": "user", "content": results})
 ```
 
-Every session layers one mechanism on top of this loop -- without changing the loop itself.
+每个课程在这个循环之上叠加一个机制 -- 循环本身始终不变。
 
-## Scope (Important)
+## 范围说明 (重要)
 
-This repository is a 0->1 learning project for building a nano Claude Code-like agent.
-It intentionally simplifies or omits several production mechanisms:
+本仓库是一个 0->1 的学习型项目，用于从零构建 nano Claude Code-like agent。
+为保证学习路径清晰，仓库有意简化或省略了部分生产机制：
 
-- Full event/hook buses (for example PreToolUse, SessionStart/End, ConfigChange).  
-  s12 includes only a minimal append-only lifecycle event stream for teaching.
-- Rule-based permission governance and trust workflows
-- Session lifecycle controls (resume/fork) and advanced worktree lifecycle controls
-- Full MCP runtime details (transport/OAuth/resource subscribe/polling)
+- 完整事件 / Hook 总线 (例如 PreToolUse、SessionStart/End、ConfigChange)。  
+  s12 仅提供教学用途的最小 append-only 生命周期事件流。
+- 基于规则的权限治理与信任流程
+- 会话生命周期控制 (resume/fork) 与更完整的 worktree 生命周期控制
+- 完整 MCP 运行时细节 (transport/OAuth/资源订阅/轮询)
 
-Treat the team JSONL mailbox protocol in this repo as a teaching implementation, not a claim about any specific production internals.
+仓库中的团队 JSONL 邮箱协议是教学实现，不是对任何特定生产内部实现的声明。
 
-## Quick Start
+## 快速开始
 
 ```sh
 git clone https://github.com/shareAI-lab/learn-claude-code
 cd learn-claude-code
 pip install -r requirements.txt
-cp .env.example .env   # Edit .env with your ANTHROPIC_API_KEY
+cp .env.example .env   # 编辑 .env 填入你的 ANTHROPIC_API_KEY
 
-python agents/s01_agent_loop.py       # Start here
-python agents/s12_worktree_task_isolation.py  # Full progression endpoint
-python agents/s_full.py               # Capstone: all mechanisms combined
+python agents/s01_agent_loop.py       # 从这里开始
+python agents/s12_worktree_task_isolation.py  # 完整递进终点
+python agents/s_full.py               # 总纲: 全部机制合一
 ```
 
-### Web Platform
+### Web 平台
 
-Interactive visualizations, step-through diagrams, source viewer, and documentation.
+交互式可视化、分步动画、源码查看器, 以及每个课程的文档。
 
 ```sh
 cd web && npm install && npm run dev   # http://localhost:3000
 ```
 
-## Learning Path
+## 学习路径
 
 ```
-Phase 1: THE LOOP                    Phase 2: PLANNING & KNOWLEDGE
+第一阶段: 循环                       第二阶段: 规划与知识
 ==================                   ==============================
-s01  The Agent Loop          [1]     s03  TodoWrite               [5]
-     while + stop_reason                  TodoManager + nag reminder
+s01  Agent 循环              [1]     s03  TodoWrite               [5]
+     while + stop_reason                  TodoManager + nag 提醒
      |                                    |
-     +-> s02  Tool Use            [4]     s04  Subagents            [5]
-              dispatch map: name->handler     fresh messages[] per child
+     +-> s02  Tool Use            [4]     s04  子智能体             [5]
+              dispatch map: name->handler     每个子智能体独立 messages[]
                                               |
                                          s05  Skills               [5]
-                                              SKILL.md via tool_result
+                                              SKILL.md 通过 tool_result 注入
                                               |
                                          s06  Context Compact      [5]
-                                              3-layer compression
+                                              三层上下文压缩
 
-Phase 3: PERSISTENCE                 Phase 4: TEAMS
+第三阶段: 持久化                     第四阶段: 团队
 ==================                   =====================
-s07  Tasks                   [8]     s09  Agent Teams             [9]
-     file-based CRUD + deps graph         teammates + JSONL mailboxes
+s07  任务系统                [8]     s09  智能体团队             [9]
+     文件持久化 CRUD + 依赖图             队友 + JSONL 邮箱
      |                                    |
-s08  Background Tasks        [6]     s10  Team Protocols          [12]
-     daemon threads + notify queue        shutdown + plan approval FSM
+s08  后台任务                [6]     s10  团队协议               [12]
+     守护线程 + 通知队列                  关机 + 计划审批 FSM
                                           |
-                                     s11  Autonomous Agents       [14]
-                                          idle cycle + auto-claim
+                                     s11  自治智能体             [14]
+                                          空闲轮询 + 自动认领
                                      |
-                                     s12  Worktree Isolation      [16]
-                                          task coordination + optional isolated execution lanes
+                                     s12  Worktree 隔离          [16]
+                                          任务协调 + 按需隔离执行通道
 
-                                     [N] = number of tools
+                                     [N] = 工具数量
 ```
 
-## Architecture
+## 项目结构
 
 ```
 learn-claude-code/
 |
-|-- agents/                        # Python reference implementations (s01-s12 + s_full capstone)
-|-- docs/{en,zh,ja}/               # Mental-model-first documentation (3 languages)
-|-- web/                           # Interactive learning platform (Next.js)
-|-- skills/                        # Skill files for s05
-+-- .github/workflows/ci.yml      # CI: typecheck + build
+|-- agents/                        # Python 参考实现 (s01-s12 + s_full 总纲)
+|-- docs/{en,zh,ja}/               # 心智模型优先的文档 (3 种语言)
+|-- web/                           # 交互式学习平台 (Next.js)
+|-- skills/                        # s05 的 Skill 文件
++-- .github/workflows/ci.yml      # CI: 类型检查 + 构建
 ```
 
-## Documentation
+## 文档
 
-Mental-model-first: problem, solution, ASCII diagram, minimal code.
-Available in [English](./docs/en/) | [中文](./docs/zh/) | [日本語](./docs/ja/).
+心智模型优先: 问题、方案、ASCII 图、最小化代码。
+[English](./docs/en/) | [中文](./docs/zh/) | [日本語](./docs/ja/)
 
-| Session | Topic | Motto |
-|---------|-------|-------|
-| [s01](./docs/en/s01-the-agent-loop.md) | The Agent Loop | *One loop & Bash is all you need* |
-| [s02](./docs/en/s02-tool-use.md) | Tool Use | *Adding a tool means adding one handler* |
-| [s03](./docs/en/s03-todo-write.md) | TodoWrite | *An agent without a plan drifts* |
-| [s04](./docs/en/s04-subagent.md) | Subagents | *Break big tasks down; each subtask gets a clean context* |
-| [s05](./docs/en/s05-skill-loading.md) | Skills | *Load knowledge when you need it, not upfront* |
-| [s06](./docs/en/s06-context-compact.md) | Context Compact | *Context will fill up; you need a way to make room* |
-| [s07](./docs/en/s07-task-system.md) | Tasks | *Break big goals into small tasks, order them, persist to disk* |
-| [s08](./docs/en/s08-background-tasks.md) | Background Tasks | *Run slow operations in the background; the agent keeps thinking* |
-| [s09](./docs/en/s09-agent-teams.md) | Agent Teams | *When the task is too big for one, delegate to teammates* |
-| [s10](./docs/en/s10-team-protocols.md) | Team Protocols | *Teammates need shared communication rules* |
-| [s11](./docs/en/s11-autonomous-agents.md) | Autonomous Agents | *Teammates scan the board and claim tasks themselves* |
-| [s12](./docs/en/s12-worktree-task-isolation.md) | Worktree + Task Isolation | *Each works in its own directory, no interference* |
+| 课程 | 主题 | 格言 |
+|------|------|------|
+| [s01](./docs/zh/s01-the-agent-loop.md) | Agent 循环 | *One loop & Bash is all you need* |
+| [s02](./docs/zh/s02-tool-use.md) | Tool Use | *加一个工具, 只加一个 handler* |
+| [s03](./docs/zh/s03-todo-write.md) | TodoWrite | *没有计划的 agent 走哪算哪* |
+| [s04](./docs/zh/s04-subagent.md) | 子智能体 | *大任务拆小, 每个小任务干净的上下文* |
+| [s05](./docs/zh/s05-skill-loading.md) | Skills | *用到什么知识, 临时加载什么知识* |
+| [s06](./docs/zh/s06-context-compact.md) | Context Compact | *上下文总会满, 要有办法腾地方* |
+| [s07](./docs/zh/s07-task-system.md) | 任务系统 | *大目标要拆成小任务, 排好序, 记在磁盘上* |
+| [s08](./docs/zh/s08-background-tasks.md) | 后台任务 | *慢操作丢后台, agent 继续想下一步* |
+| [s09](./docs/zh/s09-agent-teams.md) | 智能体团队 | *任务太大一个人干不完, 要能分给队友* |
+| [s10](./docs/zh/s10-team-protocols.md) | 团队协议 | *队友之间要有统一的沟通规矩* |
+| [s11](./docs/zh/s11-autonomous-agents.md) | 自治智能体 | *队友自己看看板, 有活就认领* |
+| [s12](./docs/zh/s12-worktree-task-isolation.md) | Worktree + 任务隔离 | *各干各的目录, 互不干扰* |
 
-## What's Next -- from understanding to shipping
+## 学完之后 -- 从理解到落地
 
-After the 12 sessions you understand how an agent works inside out. Two ways to put that knowledge to work:
+12 个课程走完, 你已经从内到外理解了 agent 的工作原理。两种方式把知识变成产品:
 
-### Kode Agent CLI -- Open-Source Coding Agent CLI
+### Kode Agent CLI -- 开源 Coding Agent CLI
 
 > `npm i -g @shareai-lab/kode`
 
-Skill & LSP support, Windows-ready, pluggable with GLM / MiniMax / DeepSeek and other open models. Install and go.
+支持 Skill & LSP, 适配 Windows, 可接 GLM / MiniMax / DeepSeek 等开放模型。装完即用。
 
 GitHub: **[shareAI-lab/Kode-cli](https://github.com/shareAI-lab/Kode-cli)**
 
-### Kode Agent SDK -- Embed Agent Capabilities in Your App
+### Kode Agent SDK -- 把 Agent 能力嵌入你的应用
 
-The official Claude Code Agent SDK communicates with a full CLI process under the hood -- each concurrent user means a separate terminal process. Kode SDK is a standalone library with no per-user process overhead, embeddable in backends, browser extensions, embedded devices, or any runtime.
+官方 Claude Code Agent SDK 底层与完整 CLI 进程通信 -- 每个并发用户 = 一个终端进程。Kode SDK 是独立库, 无 per-user 进程开销, 可嵌入后端、浏览器插件、嵌入式设备等任意运行时。
 
 GitHub: **[shareAI-lab/Kode-agent-sdk](https://github.com/shareAI-lab/Kode-agent-sdk)**
 
 ---
 
-## Sister Repo: from *on-demand sessions* to *always-on assistant*
+## 姊妹教程: 从*被动临时会话*到*主动常驻助手*
 
-The agent this repo teaches is **use-and-discard** -- open a terminal, give it a task, close when done, next session starts blank. That is the Claude Code model.
+本仓库教的 agent 属于 **用完即走** 型 -- 开终端、给任务、做完关掉, 下次重开是全新会话。Claude Code 就是这种模式。
 
-[OpenClaw](https://github.com/openclaw/openclaw) proved another possibility: on top of the same agent core, two mechanisms turn the agent from "poke it to make it move" into "it wakes up every 30 seconds to look for work":
+但 [OpenClaw](https://github.com/openclaw/openclaw) (小龙虾) 证明了另一种可能: 在同样的 agent core 之上, 加两个机制就能让 agent 从"踹一下动一下"变成"自己隔 30 秒醒一次找活干":
 
-- **Heartbeat** -- every 30s the system sends the agent a message to check if there is anything to do. Nothing? Go back to sleep. Something? Act immediately.
-- **Cron** -- the agent can schedule its own future tasks, executed automatically when the time comes.
+- **心跳 (Heartbeat)** -- 每 30 秒系统给 agent 发一条消息, 让它检查有没有事可做。没事就继续睡, 有事立刻行动。
+- **定时任务 (Cron)** -- agent 可以给自己安排未来要做的事, 到点自动执行。
 
-Add multi-channel IM routing (WhatsApp / Telegram / Slack / Discord, 13+ platforms), persistent context memory, and a Soul personality system, and the agent goes from a disposable tool to an always-on personal AI assistant.
+再加上 IM 多通道路由 (WhatsApp/Telegram/Slack/Discord 等 13+ 平台)、不清空的上下文记忆、Soul 人格系统, agent 就从一个临时工具变成了始终在线的个人 AI 助手。
 
-**[claw0](https://github.com/shareAI-lab/claw0)** is our companion teaching repo that deconstructs these mechanisms from scratch:
+**[claw0](https://github.com/shareAI-lab/claw0)** 是我们的姊妹教学仓库, 从零拆解这些机制:
 
 ```
 claw agent = agent core + heartbeat + cron + IM chat + memory + soul
@@ -222,15 +218,15 @@ claw agent = agent core + heartbeat + cron + IM chat + memory + soul
 
 ```
 learn-claude-code                   claw0
-(agent runtime core:                (proactive always-on assistant:
- loop, tools, planning,              heartbeat, cron, IM channels,
- teams, worktree isolation)          memory, soul personality)
+(agent 运行时内核:                   (主动式常驻 AI 助手:
+ 循环、工具、规划、                    心跳、定时任务、IM 通道、
+ 团队、worktree 隔离)                  记忆、Soul 人格)
 ```
 
-## License
+## 许可证
 
 MIT
 
 ---
 
-**The model is the agent. Our job is to give it tools and stay out of the way.**
+**模型就是智能体。我们的工作就是给它工具, 然后让开。**
