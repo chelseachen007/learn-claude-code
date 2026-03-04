@@ -2,12 +2,23 @@
   "name": "learn-claude-code-ts",
   "version": "1.0.0",
   "type": "module",
+  "description": "Learn Claude Code - TypeScript implementation of AI coding agents",
   "scripts": {
     "s01": "npx tsx s01_agent_loop.ts",
     "s02": "npx tsx s02_tool_use.ts",
+    "s03": "npx tsx s03_todo_write.ts",
+    "s04": "npx tsx s04_subagent.ts",
+    "s05": "npx tsx s05_skill_loading.ts",
+    "s06": "npx tsx s06_context_compact.ts",
+    "s07": "npx tsx s07_task_system.ts",
     "s08": "npx tsx s08_background_tasks.ts",
     "s09": "npx tsx s09_agent_teams.ts",
-    "s10": "npx tsx s10_team_protocols.ts"
+    "s10": "npx tsx s10_team_protocols.ts",
+    "s11": "npx tsx s11_autonomous_agents.ts",
+    "s12": "npx tsx s12_worktree_task_isolation.ts",
+    "full": "npx tsx s_full.ts",
+    "build": "tsc",
+    "clean": "rm -rf dist/ .tasks/ .team/ .transcripts/"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
@@ -19,5 +30,8 @@
     "@types/uuid": "^10.0.0",
     "tsx": "^4.0.0",
     "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
